@@ -1,6 +1,8 @@
 <?php
-	$hello = "World";
-  $mysqli = new mysqli("localhost", "root", "root", "php_exam_db"); // Connexion à la db "php_exam"
+  include 'connection_controller.php';
+  session_start();
+  $errors = array(); 
+
 // si vous avez une erreur ici, remplacez le deuxième "root" par une string vide
   $result = $mysqli->query("SELECT * FROM Users"); 
 	if (isset($_POST['reg_user'])) {
@@ -26,16 +28,17 @@
 
   if (count($errors) == 0) {
   	$password = md5($my_password);//encrypt the password before saving in the database
-
-  	$query = "INSERT INTO Users (username, email, password) 
-  			  VALUES('$username', '$email', '$password')";
-  	mysqli_query($db, $query);
+  	$query = "INSERT INTO Users (`Username`, `Password`, `Email`, `Is_admin`) 
+  			  VALUES('$username', '$password','$email', '0')";
+  	$mysqli->query($query);
   	$_SESSION['username'] = $username;
   	$_SESSION['success'] = "You are now logged in";
-  	header('location: views/home_view.php');
+  	header('location: ../views/home_view.php');
+  } else {
+  	header('location: ../views/register_view.php');
+
   }
  
 
   }
 ?>
-<h1>Hello <?php echo $username ?> !</h1> 

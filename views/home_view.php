@@ -1,3 +1,12 @@
+<?php
+  session_start();
+
+
+  
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -131,5 +140,14 @@
   </div>
 </div>
 </div>
+<p>hello</p>
+
+<p>
+	<?php echo $_SESSION['username']?>
+
+</p>
+<p>hello</p>
+
+
   </body>
 </html>
