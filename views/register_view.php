@@ -1,3 +1,8 @@
+<?php
+  include 'connection_controller.php';
+  session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,7 +33,13 @@
 		<div class="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
 	</div>
 	<div class="flex md:w-1/2 justify-center py-10 items-center bg-white">
-		<form class="bg-white" method="POST" action="../controllers/register_controller.php" >
+		<form class="bg-white" method="POST" action="../controllers/authentification_controller.php" >
+			<?php 
+				if(isset($_SESSION["error"])){
+					$error = $_SESSION['error'];
+					echo "<span>$error</span>";
+				}
+			?>
 			<h1 class="text-gray-800 font-bold text-2xl mb-1">Register yourself!</h1>
 				<div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"

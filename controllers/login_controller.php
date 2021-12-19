@@ -16,7 +16,8 @@
         $_SESSION['success'] = "You are now logged in";
       	header('location: ../views/home_view.php');
       }else {
-  	    header('location: ../views/register_view.php');
+        $_SESSION['error'] = "No account with this credentials exists! Please Register your account !";
+  	    header('location: ../views/login_view.php');
 
       }
   }
