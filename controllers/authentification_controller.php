@@ -1,9 +1,9 @@
 <?php
   include 'connection_controller.php';
+  include '../models/User.php';
   session_start();
   $errors = array(); 
 
-// si vous avez une erreur ici, remplacez le deuxième "root" par une string vide
   $result = $mysqli->query("SELECT * FROM Users"); 
 	if (isset($_POST['reg_user'])) {
   // receive all input values from the form
@@ -35,9 +35,14 @@
   	$query = "INSERT INTO Users (`Username`, `Password`, `Email`, `Is_admin`) 
   			  VALUES('$username', '$password','$email', '0')";
   	$mysqli->query($query);
+    $q = "SELECT * FROM Users WHERE Username='$username' AND Password='$password'";
+    $results = $mysqli->query($q);
+    $user = mysqli_fetch_assoc($results);
     unset($_SESSION['error']);
-  	$_SESSION['username'] = $username;
+    $current_user = new User($username, $password, $email, $user['ID']);
+  	$_SESSION['current_user'] = $current_user ;
   	$_SESSION['success'] = "You are now logged in";
+    echo $_SESSION['current_user']-> get_id() ;
   	header('location: ../views/home_view.php');
   } 
  
@@ -48,12 +53,14 @@
     $username = mysqli_real_escape_string($mysqli, $_POST['username']);
     $password = mysqli_real_escape_string($mysqli, $_POST['password']);
       $password = md5($password);
-      echo $password;
       $query = "SELECT * FROM Users WHERE Username='$username' AND Password='$password'";
   	  $results = $mysqli->query($query);
       if (mysqli_num_rows($results) == 1) {
-        $_SESSION['username'] = $username;
+        $_SESSION['current_user'] = $current_user ;
         $_SESSION['success'] = "You are now logged in";
+        $user = mysqli_fetch_assoc($results);
+        $current_user = new User($user['Username'], $user['Password'], $user['Email'], $user['ID']);
+        $_SESSION['current_user'] = $current_user ;
       	header('location: ../views/home_view.php');
       }else {
         $_SESSION['error'] = "No account with this credentials exists! Please Register your account !";
@@ -63,11 +70,10 @@
   }
 
   if (isset($_GET['logout'])) {
-  	// session_destroy();
-  	// unset($_SESSION['username']);
-  	// header('location: ../views/login_view.php');
-    echo $_GET['logout'];
-    echo "hhhh";
+  	session_destroy();
+  	unset($_SESSION['username']);
+  	header('location: ../views/login_view.php');
+ 
   }
 
 ?>
