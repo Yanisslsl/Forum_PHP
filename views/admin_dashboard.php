@@ -4,7 +4,6 @@
   session_start();
 	if(isset($_SESSION['current_user'])){
 		$is_admin = $_SESSION['current_user']->get_is_admin();
-		$user_id = $_SESSION['current_user']->get_id();
   
   }else {
     header('location: views/login_view.php');
@@ -13,6 +12,7 @@
 
 
 	$results = $mysqli->query("SELECT * FROM Articles ORDER BY ID DESC");
+  $results_user = $mysqli->query("SELECT * FROM Users ORDER BY ID DESC")
 
 ?>
 
@@ -87,10 +87,8 @@
 <div class="h-1/3  flex items-center justify-center">
   <div class="px-10">
     <div class="bg-white w-full rounded-2xl px-10 py-8 shadow-lg hover:shadow-2xl transition duration-500">
-		<?php if($row['User_ID'] ==  $user_id){?>
-			 <a href="edit_view.php?edit=<?php echo $row['ID']; ?>"  >Edit</a>
-			 <a href="../controllers/articles_controller.php?del=<?php echo $row['ID']; ?>" >Delete</a>
-		<?php	}?>
+		<a href="edit_view.php?edit=<?php echo $row['ID']; ?>"  >Edit</a>
+		<a href="../controllers/articles_controller.php?del=<?php echo $row['ID']; ?>" >Delete</a>
 
 
       <div class="mt-4">
@@ -137,5 +135,34 @@
 </div>
 <?php } ?>
 </div>
+<?php while ($row = mysqli_fetch_array($results_user)) { ?>
+
+<div class="container mx-auto max-w-sm mt-10 flex flex-col space-y-4 justify-center items-center">
+  <div class="bg-white w-full flex items-center p-2 rounded-xl shadow border">
+    <div class="flex items-center space-x-4">
+      <img src="https://avatars2.githubusercontent.com/u/1490347?s=460&u=39d7a6b9bc030244e2c509119e5f64eabb2b1727&v=4" alt="My profile" class="w-16 h-16 rounded-full">
+    </div>
+    <div class="flex-grow p-3">
+      <div class="font-semibold text-gray-700">
+        <?php echo $row['Username']; ?>
+      </div>
+      <div class="text-sm text-gray-500">
+        <?php echo $row['Email']; ?>
+        
+      </div>
+      <div class="text-sm text-gray-500">
+        <?php echo $row['Password']; ?>
+        
+      </div>
+      <a href="edit_view_admin.php?edit=<?php echo $row['ID']; ?>"  >Edit</a>
+      <a href="../controllers/account_controller.php?delete=<?php echo $row['ID']; ?>" >Delete</a>
+    </div>
+    <div class="p-2">
+      <img src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" class="w-4 h-4 rounded-full order-1">
+    </div>
+  </div>
+</div>
+<?php } ?>
+
   </body>
 </html>

@@ -66,6 +66,13 @@
 							</svg>
 							<input class="pl-2 outline-none border-none" required type="password" name="password" id="" placeholder="Password" />
       </div>
+					<label class="flex justify-start items-start">
+						<div class="bg-white border-2 rounded border-gray-400 w-6 h-6 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-blue-500">
+							<input name='is_admin' type="checkbox" class="opacity-0 absolute">
+						<svg class="fill-current hidden w-4 h-4 text-green-500 pointer-events-none" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
+						</div>
+						<div class="select-none"> Create admin user</div>
+					</label>
 							<input name="reg_user" type="submit" class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Login</button>
 							<span class="text-sm ml-2 hover:text-blue-500 cursor-pointer">Forgot Password ?</span>
 		</form>
@@ -73,3 +80,8 @@
 </div>
   </body>
 </html>
+<style>
+  input:checked + svg {
+  	display: block;
+  }
+</style>

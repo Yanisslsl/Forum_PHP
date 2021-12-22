@@ -32,18 +32,31 @@
 
   if (count($errors) == 0) {
   	$password = md5($my_password);//encrypt the password before saving in the database
-  	$query = "INSERT INTO Users (`Username`, `Password`, `Email`, `Is_admin`) 
-  			  VALUES('$username', '$password','$email', '0')";
+    if (isset($_POST['is_admin'])) {
+  	  $query = "INSERT INTO Users (`Username`, `Password`, `Email`, `Is_admin`) 
+  			    VALUES('$username', '$password','$email', '1')";
+    } else {
+      $query = "INSERT INTO Users (`Username`, `Password`, `Email`, `Is_admin`) 
+  			    VALUES('$username', '$password','$email', '0')";
+    }
   	$mysqli->query($query);
     $q = "SELECT * FROM Users WHERE Username='$username' AND Password='$password'";
     $results = $mysqli->query($q);
     $user = mysqli_fetch_assoc($results);
     unset($_SESSION['error']);
-    $current_user = new User($username, $password, $email, $user['ID']);
+    if (isset($_POST['is_admin'])) {
+      $current_user = new User($username, $password, $email, $user['ID'], 1);
+
+    }else {
+      $current_user = new User($username, $password, $email, $user['ID'], 0);
+    }
   	$_SESSION['current_user'] = $current_user ;
   	$_SESSION['success'] = "You are now logged in";
-    echo $_SESSION['current_user']-> get_id() ;
+     echo $_SESSION['current_user']->get_is_admin();
+      echo $user['Is_admin'] == '1' ? true : false;
   	header('location: ../views/home_view.php');
+
+
   } 
  
 
@@ -59,8 +72,10 @@
         $_SESSION['current_user'] = $current_user ;
         $_SESSION['success'] = "You are now logged in";
         $user = mysqli_fetch_assoc($results);
-        $current_user = new User($user['Username'], $user['Password'], $user['Email'], $user['ID']);
+        $current_user = new User($user['Username'], $user['Password'], $user['Email'], $user['ID'], $user['Is_admin'] == '1' ? 1 : 0);
         $_SESSION['current_user'] = $current_user ;
+        // echo $_SESSION['current_user']->get_is_admin();
+        // echo $user['Is_admin'] == '1' ? true : false;
       	header('location: ../views/home_view.php');
       }else {
         $_SESSION['error'] = "No account with this credentials exists! Please Register your account !";

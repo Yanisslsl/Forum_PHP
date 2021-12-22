@@ -4,14 +4,18 @@ class User {
   public $email;
   public $password;
   public $id;
+  public $is_admin;
 
 
 
-  function __construct($username, $password, $email, $id) {
+
+  function __construct($username, $password, $email, $id, $is_admin) {
     $this->username = $username; 
     $this->password = $password; 
     $this->email = $email; 
     $this->id = $id; 
+    $this->is_admin = $is_admin; 
+
 
 
   }
@@ -28,10 +32,11 @@ class User {
   function get_id() {
     return $this->id;
   }
+
+  function get_is_admin() {
+    return $this->is_admin;
+  }
   
 }
 
-// echo $apple->get_username();
-// echo "<br>";
-// echo $apple->get_email();
 ?>
