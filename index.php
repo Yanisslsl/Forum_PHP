@@ -1,6 +1,8 @@
 <?php
+  session_start();
 
-  if($_SESSION['username']){
+
+  if(isset($_SESSION['current_user'])){
     header('location: views/home_view.php');
   
   }else {
