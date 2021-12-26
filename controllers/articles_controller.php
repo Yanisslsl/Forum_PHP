@@ -38,6 +38,38 @@
 
   }
 
+  if (isset($_GET['search'])) {
+    $safe_value = mysqli_real_escape_string($mysqli, $_GET['search']);$
+    $query ="SELECT * FROM Articles WHERE `Title` LIKE '%$safe_value%'";
+  	$results = $mysqli->query("SELECT * FROM Articles WHERE `Title` LIKE '%$safe_value%'");
+    // while ($row = mysqli_fetch_array($results)) { 
+    while ($row = mysqli_fetch_array($results)) {
+   
+        echo "<p>" .  $row['Title'] . "</p>";  
+       }
+  }
+
+  if (isset($_GET['add_to_fav'])){
+    $article_id = mysqli_real_escape_string($mysqli, $_GET['add_to_fav']);
+    $user_id = $_SESSION['current_user']->get_id();
+    $q ="SELECT * FROM Articles_Users WHERE Article_ID='$article_id' AND User_ID='$user_id'";
+    $res = $mysqli->query($q);
+    if (mysqli_num_rows($res) == 1) {
+      $query = "DELETE FROM Articles_Users WHERE Article_ID='$article_id' AND User_ID='$user_id'";
+      $mysqli->query($query);
+  	  header('location: ../views/home_view.php');
+
+
+    } else {
+      $query = "INSERT INTO Articles_Users (`User_ID`, `Article_ID`) VALUES ('$user_id', '$article_id')";
+      $mysqli->query($query);
+  	  header('location: ../views/home_view.php');
+
+    }
+
+
+  }
+
 
 
 ?>
