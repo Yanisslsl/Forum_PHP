@@ -41,7 +41,7 @@
 <nav class="top-0 absolute z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-blueGray-800">
   <div class="container px-4 mx-auto flex flex-wrap items-center justify-between">
     <div class="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start ">
-      <a class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white" href="../../index.html">Home</a><button class="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none" type="button" onclick="toggleNavbar('example-collapse-navbar')">
+      <a class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white" href="../views/home_view.php">Home</a><button class="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none" type="button" onclick="toggleNavbar('example-collapse-navbar')">
         <i class="text-white fas fa-bars"></i>
       </button>
     </div>
@@ -87,7 +87,21 @@
 <div class="h-1/3  flex items-center justify-center">
   <div class="px-10">
     <div class="bg-white w-full rounded-2xl px-10 py-8 shadow-lg hover:shadow-2xl transition duration-500">
-		<a href="edit_view.php?edit=<?php echo $row['ID']; ?>"  >Edit</a>
+    <?php 
+      $article_id = $row["ID"];
+      $q ="SELECT * FROM Articles_Users WHERE Article_ID='$article_id' AND User_ID='$user_id'";
+  	  $res = $mysqli->query($q);
+      if (mysqli_num_rows($res) == 1) {?>
+        <a href="../controllers/articles_controller.php?add_to_fav=<?php echo $row['ID']; ?>" >
+        <button class="p-2 pl-5 pr-5 bg-yellow-500 text-gray-100 text-lg rounded-lg focus:border-4 border-yellow-300">Retirer des favoris</button>
+      </a>
+      <?php	} else { ?>
+        <a href="../controllers/articles_controller.php?add_to_fav=<?php echo $row['ID']; ?>">
+          <button class="p-2 pl-5 pr-5 bg-transparent border-2 border-yellow-500 text-yellow-500 text-lg rounded-lg hover:bg-yellow-500 hover:text-gray-100 focus:border-4 focus:border-yellow-300">Ajouter aux favoris</button>
+        </a>
+      <?php	}?>
+    
+    <a href="edit_view.php?edit=<?php echo $row['ID']; ?>"  >Edit</a>
 		<a href="../controllers/articles_controller.php?del=<?php echo $row['ID']; ?>" >Delete</a>
 
 

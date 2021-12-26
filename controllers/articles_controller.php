@@ -10,10 +10,7 @@
     $user_id = $_SESSION['current_user']->get_id();
     $query = "INSERT INTO Articles (`Title`, `Description`, `Date`, `User_ID`) VALUES ('$title', '$description' ,now(), '$user_id')";
   	$mysqli->query($query);
-    // echo "hello";
-    // echo $title;
-    // echo $description;
-    // echo $user_id;
+  	header('location: ../views/home_view.php');
 
   }
 
@@ -38,16 +35,7 @@
 
   }
 
-  if (isset($_GET['search'])) {
-    $safe_value = mysqli_real_escape_string($mysqli, $_GET['search']);$
-    $query ="SELECT * FROM Articles WHERE `Title` LIKE '%$safe_value%'";
-  	$results = $mysqli->query("SELECT * FROM Articles WHERE `Title` LIKE '%$safe_value%'");
-    // while ($row = mysqli_fetch_array($results)) { 
-    while ($row = mysqli_fetch_array($results)) {
-   
-        echo "<p>" .  $row['Title'] . "</p>";  
-       }
-  }
+
 
   if (isset($_GET['add_to_fav'])){
     $article_id = mysqli_real_escape_string($mysqli, $_GET['add_to_fav']);

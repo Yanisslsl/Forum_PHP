@@ -52,8 +52,6 @@
     }
   	$_SESSION['current_user'] = $current_user ;
   	$_SESSION['success'] = "You are now logged in";
-     echo $_SESSION['current_user']->get_is_admin();
-      echo $user['Is_admin'] == '1' ? true : false;
   	header('location: ../views/home_view.php');
 
 

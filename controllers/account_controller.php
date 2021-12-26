@@ -19,7 +19,7 @@
       $q = "SELECT * FROM Users WHERE ID = '$user_id'";
       $results = $mysqli->query($q);
       $user = mysqli_fetch_assoc($results);
-      $current_user = new User($user['Username'], $user['Password'], $user['Email'], $user_id);
+      $current_user = new User($user['Username'], $user['Password'], $user['Email'], $user_id, $user['Is_admin']);
   	  $_SESSION['current_user'] = $current_user ;
       $_SESSION['status'] =  "Record updated successfully";
   	  header('location: ../views/account_view.php');
@@ -42,11 +42,6 @@
     }
     $req = "UPDATE Users SET Username='$username', Password='$pass', Email='$email' WHERE ID='$user_id'";
     if ($mysqli->query($req) === TRUE) {
-      // $q = "SELECT * FROM Users WHERE ID = '$user_id'";
-      // $results = $mysqli->query($q);
-      // $user = mysqli_fetch_assoc($results);
-      // $current_user = new User($user['Username'], $user['Password'], $user['Email'], $user_id);
-  	  // $_SESSION['current_user'] = $current_user ;
       $_SESSION['status'] =  "Record updated successfully";
   	  header('location: ../views/edit_view_admin.php?edit='. $user_id);
     } else {
@@ -59,7 +54,6 @@
 
   if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
-    echo $id;
     $query = "DELETE FROM Users WHERE ID=$id";
   	$mysqli->query($query);
   	header('location: ../views/admin_dashboard.php');
